@@ -1,0 +1,60 @@
+/* 
+    Document   : colors.css
+    Created on : June 15, 2011
+    Author     : George
+    Description: Style the colors game board.
+*/
+
+#stage {
+	border: 1px solid black;
+	border-radius: 15px;
+	background-color: #D9D9D9;
+}
+#stage div {
+	text-align: center;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+#stage div { 
+	position: relative;
+}
+
+#stage img {
+	width: 100px;
+	height: 100px;
+	border: 1px solid black;
+	border-radius: 5px;
+}
+
+#spacer {
+	height: 100px;
+}
+#lineup {
+	background-color: ;
+}
+#lineup > div:first-child {
+	height: 240px;
+	padding: 15px;
+	background-color:  #E2E2E2;
+	border: 1px solid black;
+	border-radius: 15px;
+}
+
+#lineup div div {
+	position: relative;
+	display: inline;
+	margin-bottom: 15px;
+	float: left;
+	margin-right: 0px;
+}
+
+#lineup div>div {
+	margin-right: 15px;
+}
+
+#lineup img {
+	width: 100px;
+	height: 100px;
+	border: 1px solid black;
+	border-radius: 5px;
+}

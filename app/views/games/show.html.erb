@@ -1,0 +1,32 @@
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  Dave & George jquery game of: <b><%= @game.name %></b>
+</p>
+<p>bunch of images below ..</p>
+<div id="stage">
+	<div>
+		<img src="#">  <!-- a placeholder tag to be replaced by a lineup image on page load -->
+	</div>
+</div>
+<div id="spacer">
+</div>
+	
+<div id="lineup">
+	<div>
+		<% @icons.each do |icon| %>
+		<div>
+		  <%= image_tag icon %>
+		</div>
+		<% end %>
+	</div>
+</div>
+
+
+<%= link_to 'Edit', edit_game_path(@game) %> |
+<%= link_to 'Back', games_path %>
+
+<script>
+
+</script>
