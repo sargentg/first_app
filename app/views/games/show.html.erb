@@ -4,7 +4,8 @@
 <p>
   Dave & George jquery game of: <b><%= @game.name %></b>
 </p>
-<p>bunch of images below ..</p>
+<p>Random sequence:</p>
+
 <div id="stage">
 	<div>
 		<img src="#">  <!-- a placeholder tag to be replaced by a lineup image on page load -->
@@ -27,6 +28,111 @@
 <%= link_to 'Edit', edit_game_path(@game) %> |
 <%= link_to 'Back', games_path %>
 
+<p id="console">
+	[<%= @ruby_array.join(",") %>]
+</p>
+
+
 <script>
+// initialize client-side javascript array to server-side ruby array
+// This javascript is here because I need the active <% %> tags. When we switch
+// to the Rails 3.1 Assets Pipeline, should be able to move this to a pure javascript file.
+
+var global_seq = [<%= @ruby_array.join(", ") %>];
+var global_targetEl;
+// create empty array to remember which images are faded and need to be restored
+var faded_arr = [ ];
+
+$(function(){
+	// remove this index from the global_seq array
+	// copy an image from the lineup and put it onto the stage
+	cloneLineupImageToStage(global_seq[0]);
+	
+	// image click event handler
+	$("#lineup img").click(function(event){
+		if ( global_seq[0] == $("#lineup img").index(event.target)) {
+			// right answer, animate a bunch of effects
+			// ending with the next item to match on the stage
+			
+			global_targetEl = $(event.target);
+			startAnimation( global_targetEl);
+			
+		} else {
+			// wrong answer, fade the image clicked
+			$(event.target).fadeTo("slow", 0.30);
+			// remember each faded image
+			faded_arr = faded_arr.concat(event.target);
+		}
+	});
+	
+	// set the height of the stage to keep it from collapsing after the last image is removed
+	var h = $("#stage").css("height");
+	$("#stage").css("height", h);
+});
+
+// pick image to put on stage
+function cloneLineupImageToStage(ix){
+	// brighten image, then clone
+	//alert("get image #: " + ix);
+	$("#stage img").replaceWith($("#lineup img").eq(ix).css("opacity", 1).clone());
+}
+
+// remove first element [1] so:[1 0 2 3]
+// becomes:                    [0 2 3]
+// then decrement values > 1:  [0 1 2]
+function reindex_global_seq(above_here) {
+	//$("#console").append("<br/>[" + global_seq + "] -- before renumber");
+	for(var i = 0; i < global_seq.length; i++){
+		if (global_seq[i] > above_here) {
+			global_seq[i]-- ;
+		}
+	}
+	// write modified global_seq array to console
+	$("#console").append("<br/>[" + global_seq + "]");
+}
+
+/* -------------- animation chains ------------------- 
+ * do animation by finishing a step before beginning the next step. See:
+ * http://stackoverflow.com/questions/461912/finish-one-animation-then-start-the-other-one
+ * ---------------------------------------------------------------------------------------- */
+function startAnimation( wrappedImage ) {
+	wrappedImage.slideUp("slow", animationStep2);
+}
+
+function animationStep2() {
+	global_targetEl.parent().remove();
+	animationStep3();
+}
+
+function animationStep3() {
+	// restore faded images
+	var restore_targets = $(faded_arr);
+
+	var ix = 0;
+	
+	(function() {
+		$(restore_targets[ix++]).fadeTo("fast", 1.0, arguments.callee);
+	})();
+	
+	animationStep4();
+}
+
+function animationStep4() {
+	// are there more images to match?
+	if (global_seq.length > 0) {
+		// chop head off sequencing array
+		removed = global_seq.splice(0, 1);
+
+		// renumber any values greater than the removed item's value
+		reindex_global_seq(removed);
+		
+		// put next image on stage
+		cloneLineupImageToStage(global_seq[0]);
+	} else {
+		// all done, no more left. Remove item from stage
+		$("#stage img").remove();
+		exit();
+	}
+}
 
 </script>

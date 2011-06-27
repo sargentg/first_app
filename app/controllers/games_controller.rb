@@ -14,8 +14,10 @@ class GamesController < ApplicationController
   # GET /games/1.xml
   def show
     @game = Game.find(params[:id])
-    #@icons = [ "images0001.jpeg", "images0002.jpeg", "images0003.jpeg", "images0004.jpeg", "images0005.jpeg", "images0006.jpeg", "images0007.jpeg", "images0008.jpeg", "images0009.jpeg"  ]
-    @icons = [ "color_black_400.png",  "color_blue_400.png", "color_brown_400.png", "color_green_400.png", "color_orange_400.png", "color_purple_400.png", "color_red_400.png", "color_white_400.png", "color_yellow_400.png" ]
+     @icons = [ "color_black_400.png",  "color_blue_400.png", "color_brown_400.png", "color_green_400.png", "color_orange_400.png", "color_purple_400.png", "color_red_400.png", "color_white_400.png", "color_yellow_400.png" ]
+     # create the sequence array showing the order to pick the 'on stage' image
+     # defaults to random order
+     @ruby_array = (0...@icons.size).to_a.shuffle
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @game }
