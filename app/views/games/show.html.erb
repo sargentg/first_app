@@ -54,6 +54,7 @@ $(function(){
  	// div (containing the image) click event handler
 	$(".lineup").click(function(event){
 			suspectFig = $(event.target);
+			if (event.target.className == "lineup") return;
 			if ($(event.target)[0].className != "suspect") {
 				suspectFig = $(event.target).parent(".suspect")[0];
 			}
