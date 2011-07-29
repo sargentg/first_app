@@ -16,11 +16,11 @@
 <div>
 	<div class = "lineup">
 		<% @icons.each do |icon| %>
-		<div class = "suspect">
+		<figure class="suspect">
 		  <%= image_tag icon, {:class => "mugshot"} %>
 		  <%= image_tag "true22x22.png",  {:class => "true"}  %>
 		  <%= image_tag "false22x22.png", {:class => "false"} %>
-		</div>
+		</figure>
 		<% end %>
 	</div>
 </div>
@@ -53,22 +53,22 @@ $(function(){
 
  	// div (containing the image) click event handler
 	$(".lineup").click(function(event){
-			suspectDiv = $(event.target);
+			suspectFig = $(event.target);
 			if ($(event.target)[0].className != "suspect") {
-				suspectDiv = $(event.target).parent(".suspect")[0];
+				suspectFig = $(event.target).parent(".suspect")[0];
 			}
-		if ( global_seq[0] == $(".lineup div.suspect").index(suspectDiv)) {
+		if ( global_seq[0] == $(".lineup figure").index(suspectFig)) {
 			// right answer, animate a bunch of effects
 			// ending with the next item to match on the podium
-			animateRightAnswer(suspectDiv, this);
+			animateRightAnswer(suspectFig, this);
 			
 		} else {
 			// wrong answer, fade the suspect image clicked
-			$("img.mugshot", suspectDiv).fadeTo("slow", 0.50);
+			$("img.mugshot", suspectFig).fadeTo("slow", 0.50);
 			// remember each faded target
-			faded_arr = faded_arr.concat(suspectDiv);
+			faded_arr = faded_arr.concat(suspectFig);
 			// show the red X that is already here
-			$("img.false", suspectDiv).fadeTo("slow", 1.0);
+			$("img.false", suspectFig).fadeTo("slow", 1.0);
 
 		}
 	});
@@ -89,15 +89,15 @@ function cloneLineupImageToPodium(ix){
 /*
     Create inside functions to handle the animation
     Formal arguments:
-        suspectDiv - the <div> that contains the image the user clicked. Possibly, the user
+        suspectFig - the <figure> that contains the image the user clicked. Possibly, the user
                      clicked outside the image, but still the correct div. This is the div
                      that contains the image.
-        lineupDiv -  The images are contained in a div with class 'lineup'. Possibly, there
+        lineupDiv -  The suspect images are contained in a div with class 'lineup'. Possibly, there
                      are multiple lineups for a different configuration of the board. The
                      lineupDiv is the actual div that contains the 'click' handler. That is
                      the value of the 'this' variable in the handler.
  */
-function animateRightAnswer(suspectDiv, lineupDiv) {
+function animateRightAnswer(suspectFig, lineupDiv) {
 
     /* -------------- animation chains -------------------
      * do animation by finishing a step before beginning the next step. See:
@@ -107,12 +107,12 @@ function animateRightAnswer(suspectDiv, lineupDiv) {
 
     function rightStep1() {
         //$("#console").append("<br/>[rightStep1]");
-        $("img.mugshot", suspectDiv).slideUp("slow", rightStep2);
+        $("img.mugshot", suspectFig).slideUp("fast", rightStep2);
     }
 
     function rightStep2() {
         //$("#console").append("<br/>[rightStep2]");
-        $(suspectDiv).remove();
+        $(suspectFig).remove();
         rightStep3();
     }
 

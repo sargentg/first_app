@@ -38,7 +38,7 @@
 	border-radius: 15px;
 }
 
-.lineup div {
+.lineup figure {
 	position: relative;
 	display: inline;
 	float: left;
@@ -47,7 +47,7 @@
 }
 
 /* The main image, i.e. suspect */
-.lineup img.mugshot {
+.lineup figure img.mugshot {
 	width: 100px;
 	height: 100px;
 	border: 1px solid black;
