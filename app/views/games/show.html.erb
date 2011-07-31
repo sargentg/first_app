@@ -7,25 +7,28 @@
 <p>Random sequence:</p>
 
 <div id="podium">
-	<div>
+	<figure>
 		<img src="#">  <!-- a placeholder tag to be replaced by a lineup image on page load -->
-	</div>
+	</figure>
 </div>
+
 <div id="spacer">
 </div>	
+
 <div>
-	<div class = "lineup">
-		<% @icons.each do |icon| %>
+	<div class = "lineup">	
+		<% @suspects.each do |suspect| %>
 		<figure class="suspect">
-		  <%= image_tag icon, {:class => "mugshot"} %>
+		  <%= image_tag suspect.src, {:class => "mugshot"} %>
 		  <%= image_tag "true22x22.png",  {:class => "true"}  %>
 		  <%= image_tag "false22x22.png", {:class => "false"} %>
+			<%= suspect_caption(suspect) %>
 		</figure>
 		<% end %>
 	</div>
 </div>
 
-
+<br />
 <%= link_to 'Edit', edit_game_path(@game) %> |
 <%= link_to 'Back', games_path %>
 
@@ -83,7 +86,9 @@ $(function(){
 function cloneLineupImageToPodium(ix){
 	// brighten image, then clone
 	//$("#console").append("<br/>[cloneLineupImage] " + ix);
-	$("#podium img").replaceWith($(".lineup img.mugshot").eq(ix).css("opacity", 1).clone());
+	$("#podium img").       replaceWith($(".lineup img.mugshot").eq(ix).css("opacity", 1).clone());
+	$("#podium figcaption").remove();
+	$("#podium figure").append($(".lineup figcaption" ).eq(ix).clone());
 }
 
 

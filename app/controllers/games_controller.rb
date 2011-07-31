@@ -15,15 +15,40 @@ class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
      @icons = [ "gradient_black_400.jpg",  "gradient_blue_400.jpg", "gradient_brown_400.jpg", "gradient_green_400.jpg", "gradient_orange_400.jpg", "gradient_purple_400.jpg", "gradient_red_400.jpg", "gradient_white_400.jpg", "gradient_yellow_400.jpg" ]
-     @labels = [ "black", "blue", "brown", "green", "orange", "purple", "red", "white", "yellow" ]
+     @captions = [ "black", "blue as the sky", "brown", "green", "orange", "purple", "red", "white", "yellow" ]
      # create the sequence array showing the order to pick the 'on stage' image
      # defaults to random order
      @ruby_array = (0...@icons.size).to_a.shuffle
+     
+     # right now, I have simulated reading values for icons and their captions by creating two arrays.
+     # from these two arrays, I'll create an array of objects named @suspects to pass to the view
+     @suspects = Array.new
+     for i in 0 ... @icons.length
+       @suspects << Suspect.new(@icons[i], @captions[i])
+     end
+
+
+     
+     
+     
+     
+     
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @game }
     end
   end
+
+  class Suspect
+    attr_accessor :src, :caption
+    
+    def initialize(src, caption)
+      @src     = src
+      @caption = caption
+    end 
+  end
+
+
 
   # GET /games/new
   # GET /games/new.xml
