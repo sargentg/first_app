@@ -19,16 +19,19 @@
 	<div class = "lineup">	
 		<% @suspects.each do |suspect| %>
 		<figure class="suspect">
-		  <%= image_tag suspect.src, {:class => "mugshot"} %>
-		  <%= image_tag "true22x22.png",  {:class => "true"}  %>
-		  <%= image_tag "false22x22.png", {:class => "false"} %>
+			<%= image_tag suspect.src, {:class => "mugshot"} %>
 			<%= suspect_caption(suspect) %>
 		</figure>
 		<% end %>
 	</div>
 </div>
 
-<br />
+<br clear="left" />
+<div id="storehouse">
+	<%= image_tag "true22x22.png",  {:class => "true"}  %>
+	<%= image_tag "false22x22.png", {:class => "false"} %>
+</div>
+
 <%= link_to 'Edit', edit_game_path(@game) %> |
 <%= link_to 'Back', games_path %>
 
@@ -57,7 +60,7 @@ $(function(){
  	// div (containing the image) click event handler
 	$(".lineup").click(function(event){
 			suspectFig = $(event.target);
-			if (event.target.className == "lineup") return;
+			if (event.target.className == "lineup") return 0;
 			if ($(event.target)[0].className != "suspect") {
 				suspectFig = $(event.target).parent(".suspect")[0];
 			}
@@ -67,12 +70,12 @@ $(function(){
 			animateRightAnswer(suspectFig, this);
 			
 		} else {
-			// wrong answer, fade the suspect image clicked
+			// wrong answer, fade the chosen suspect's image				
 			$("img.mugshot", suspectFig).fadeTo("slow", 0.50);
 			// remember each faded target
 			faded_arr = faded_arr.concat(suspectFig);
-			// show the red X that is already here
-			$("img.false", suspectFig).fadeTo("slow", 1.0);
+			// clone the red X and put it on the suspect, and make it visible
+			$("#storehouse img.false").clone().appendTo(suspectFig);
 
 		}
 	});
@@ -123,11 +126,10 @@ function animateRightAnswer(suspectFig, lineupDiv) {
     }
 
     function rightStep3() {
-        //$("#console").append("<br/>[rightStep3]");
-        // restore faded images (child(1))
-		$("img:nth-child(1)", faded_arr).fadeTo("fast", 1.0);
-		// hide the X image (child(3)) (X marks  it wrong)
-		$("img:nth-child(3)", faded_arr).fadeTo("fast", 0.0);
+        // restore faded images 
+		$("img.mugshot", faded_arr).fadeTo("fast", 1.0);
+		// remove the red X (X had been marking it wrong)
+		$("img.false", faded_arr).remove();
 
 		// note the following uses the 'arguments.callee' to sequentially animate one image at a time
         var ix = 0;
