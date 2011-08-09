@@ -1,0 +1,85 @@
+<!--
+/*
+    Create inside functions to handle the animation
+    Formal arguments:
+        suspectFig - the <figure> that contains the image the user clicked. Possibly, the user
+                     clicked outside the image, but still the correct div. This is the div
+                     that contains the image.
+        lineupDiv -  The suspect images are contained in a div with class 'lineup'. Possibly, there
+                     are multiple lineups for a different configuration of the board. The
+                     lineupDiv is the actual div that contains the 'click' handler. That is
+                     the value of the 'this' variable in the handler.
+ */
+-->
+function animateRightAnswer(suspectFig, lineupDiv) {
+
+     alert("Dumb Alert");
+    /* -------------- animation chains -------------------
+     * do animation by finishing a step before beginning the next step. See:
+     * http://stackoverflow.com/questions/461912/finish-one-animation-then-start-the-other-one
+     * ---------------------------------------------------------------------------------------- */
+    rightStep1();
+
+    function rightStep1() {
+        //$("#console").append("<br/>[rightStep1]");
+        $("img.mugshot", suspectFig).slideUp("fast", rightStep2);
+    }
+
+    function rightStep2() {
+        //$("#console").append("<br/>[rightStep2]");
+        $(suspectFig).remove();
+        rightStep3();
+    }
+
+    function rightStep3() {
+        // restore faded images
+		$("img.mugshot", faded_arr).fadeTo("fast", 1.0);
+		// remove the red X (X had been marking it wrong)
+		$("img.false", faded_arr).remove();
+
+		// note the following uses the 'arguments.callee' to sequentially animate one image at a time
+        var ix = 0;
+        (function() {
+            var el = faded_arr[ix++];
+			// restore the image
+			// workes, left here as example -- $("img:nth-child(1)", el).fadeTo("fast", 1.0, arguments.callee);
+			// remove the marked wrong X
+			// workes, left here as example -- $("img:nth-child(3)", el).fadeTo("fast", 0.0, arguments.callee);
+        })();
+		//$("#console").append("<br/>[rightStep3]--done");
+        rightStep4();
+    }
+
+    function rightStep4() {
+        //$("#console").append("<br/>[rightStep4]");
+        // are there more images to match?
+        if (global_seq.length > 0) {
+            // chop head off sequencing array
+            removed = global_seq.splice(0, 1);
+
+            // renumber any values greater than the removed item's value
+            reindex_global_seq(removed);
+
+            // put next image on podium
+            cloneLineupImageToPodium(global_seq[0]);
+        } else {
+            // all done, no more left. Remove item from podium
+            $("#podium img").remove();
+        }
+    }
+
+	// a private function to
+	// remove first element [1] so:[1 0 2 3]
+	// becomes:                    [0 2 3]
+	// then decrement values > 1:  [0 1 2]
+	function reindex_global_seq(above_here) {
+		//$("#console").append("<br/>[" + global_seq + "] -- before renumber");
+		for(var i = 0; i < global_seq.length; i++){
+			if (global_seq[i] > above_here) {
+				global_seq[i]-- ;
+			}
+		}
+		// write modified global_seq array to console
+		//$("#console").append("<br/>[" + global_seq + "]");
+	}
+}
