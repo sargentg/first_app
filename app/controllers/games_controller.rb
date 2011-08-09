@@ -27,12 +27,6 @@ class GamesController < ApplicationController
        @suspects << Suspect.new(@icons[i], @captions[i])
      end
 
-
-     
-     
-     
-     
-     
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @game }

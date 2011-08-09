@@ -13,7 +13,7 @@
 -->
 function animateRightAnswer(suspectFig, lineupDiv) {
 
-     alert("Dumb Alert");
+
     /* -------------- animation chains -------------------
      * do animation by finishing a step before beginning the next step. See:
      * http://stackoverflow.com/questions/461912/finish-one-animation-then-start-the-other-one

@@ -3,7 +3,7 @@
 // This javascript is here because I need the active <% %> tags. When we switch
 // to the Rails 3.1 Assets Pipeline, should be able to move this to a pure javascript file.
 
-var global_seq = [<%= @ruby_array.join(", ") %>];
+// var xxglobal_seq = [<%= @ruby_array.join(", ") %>];
 
 // create empty array to remember which images are faded and need to be restored
 var faded_arr = [ ];
