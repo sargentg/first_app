@@ -1,3 +1,21 @@
+<!-- note games.html.erb layout file has extra yield in head section allowing the following 
+     content_for tag to allow this page to specify extra javascript files! Way cool!
+
+     See: http://stackoverflow.com/questions/390164/javascript-include-tag-best-practice-in-a-rails-application
+          Answer 1 is above.
+		  Answer 3 provides conditional via: (@extra_head_content ||= ""). Notice use of capture
+-->
+<!-- note: the extra JavaScript files are specified in the myScripts variable - which is set to nil. 
+	 Can test by setting it to "matching", a junk value used for test, because that JavaScript file currently exists. 
+	 Set myScripts to names meaningful for this view.
+-->
+<% myScripts = nil  %>
+
+<% content_for(:head) do %>
+<%= javascript_include_tag myScripts unless myScripts.nil?%>
+<% end %>
+
+
 
 <p id="notice"><%= notice %></p>
 
